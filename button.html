@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Have Patience!</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      margin: 0;
+      background-color: #f3f4f6;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #timedButton {
+      display: none;
+      position: absolute;
+      padding: 10px 20px;
+      font-size: 16px;
+      color: #fff;
+      background-color: #35393e;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    #timedButton:hover {
+      background-color: #31363b;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button id="timedButton">Click Me!</button>
+  <audio id="ringSound" src="click-buttons-ui-menu-sounds-effects-button-7-203601.mp3"></audio>
+
+  <script>
+    function getRandomPosition() {
+      // Get the viewport dimensions
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+
+      // Calculate random positions within the viewport
+      const randomX = Math.floor(Math.random() * (viewportWidth - 100)); // 100px is the button width/height buffer
+      const randomY = Math.floor(Math.random() * (viewportHeight - 50)); // 50px is the height buffer
+
+      return { x: randomX, y: randomY };
+    }
+
+    function showButton() {
+      const button = document.getElementById("timedButton");
+      const sound = document.getElementById("ringSound");
+
+      // Get a random position
+      const { x, y } = getRandomPosition();
+
+      // Set the button position
+      button.style.left = `${x}px`;
+      button.style.top = `${y}px`;
+
+      // Play the sound
+      sound.play();
+
+      // Show the button
+      button.style.display = "block";
+
+      // Hide the button after 30 seconds
+      setTimeout(() => {
+        button.style.display = "none";
+      }, 10000); // 30 seconds
+    
+      button.addEventListener("click", () => {
+        window.location.href = "time.html";
+      });
+    
+    }
+
+    // Trigger the button to appear every 5 minutes
+    setInterval(showButton, 300000); // 5 minutes in milliseconds,  baad mein 300000 kardenge
+
+    
+    
+  </script>
+</body>
+</html>

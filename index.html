@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Murder Mystery Puzzle</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 80%;
+      max-width: 600px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    h2 {
+      color: #35393e;
+    }
+
+    .clues, .suspects, .answer {
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      width: 70%;
+      margin-bottom: 10px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #35393e;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #31363b;
+    }
+
+    #responseMessage {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+
+    .timer {
+      font-size: 18px;
+      color: red;
+    }
+
+    ol {
+      text-align: left;
+      padding-left: 20px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul li {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Software Murder Mystery</h1>
+    <p><strong>Scenario:</strong> Alex, a top software engineer, has been eliminated while working on a critical patch. Use the clues left behind to identify the saboteur.</p>
+    
+    <div class="clues">
+      <h2>Clues:</h2>
+      <ol>
+        <li id="clue1">A corrupted debug log. Parts of it were erased to hide critical data.</li>
+        <li id="clue2">A backdoor was added during testing, compromising the patch instead of fixing it.</li>
+        <li id="clue3">The antivirus flagged the patch as malware, but the rules were tampered with to create a false positive.</li>
+        <li id="clue4">Alex’s final message: "The saboteur operates like a Trojan: hidden and deceptive."</li>
+        <li id="clue5">Alex wrote: "The saboteur strikes fast but leaves gaps in their tracks."</li>
+      </ol>
+    </div>
+
+    <div class="suspects">
+      <h2>Suspects:</h2>
+      <ul>
+        <li>Byte (Debugger)</li>
+        <li>Trojan (Shady Tester)</li>
+        <li>Firewall (Security Lead)</li>
+        <li>Cache (Fast Developer)</li>
+        <li>Mal (External Contractor)</li>
+      </ul>
+    </div>
+
+    <div class="answer">
+      <h2>You think you know the culprit?</h2>
+      <form id="answerForm">
+        <input type="text" id="answerInput" placeholder="Type yes only if you are sure." required>
+        <button type="submit">Submit</button>
+      </form>
+      <p id="responseMessage"></p>
+    </div>
+
+    <div class="timer">
+      <p id="timer">Time Remaining: <span id="timeLeft">3:00</span></p>
+    </div>
+    <h1>
+      <!--<a href="https://docs.google.com/forms/d/e/1FAIpQLSd7UVG55lmLusrXE2qAWh60zfiPfA6afGpWZbWqdWDLKkElRg/viewform?usp=header" style="font-size: medium; color: #31363b;" target="_blank">SUBMIT FLAG HERE</a> -->
+    </h1>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const correctAnswer = 'yes';
+      const responseMessageElement = document.getElementById('responseMessage');
+      const timerElement = document.getElementById('timeLeft');
+      const answerForm = document.getElementById('answerForm');
+      const answerInput = document.getElementById('answerInput');
+      const timerKey = 'mysteryTimer';
+      const startTime = 180; // 3 minutes in seconds
+      let timeRemaining;
+
+      // Check if sessionStorage has a timer value
+      const savedTime = sessionStorage.getItem(timerKey);
+
+      if (!savedTime) {
+        timeRemaining = startTime;
+        sessionStorage.setItem(timerKey, timeRemaining); // Initialize timer in sessionStorage
+      } else {
+        timeRemaining = parseInt(savedTime, 10);
+      }
+
+      // Immediately update the timer display
+      function updateTimerDisplay() {
+        const minutes = Math.floor(timeRemaining / 60);
+        const seconds = timeRemaining % 60;
+        timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      }
+      updateTimerDisplay();
+
+      // Start the timer
+      const timer = setInterval(function () {
+        if (timeRemaining <= 0) {
+          clearInterval(timer);
+          responseMessageElement.textContent = 'Time is up! The game is over.';
+          responseMessageElement.style.color = 'red';
+          answerInput.disabled = true; // Disable input after time runs out
+        } else {
+          timeRemaining--;
+          sessionStorage.setItem(timerKey, timeRemaining);
+          updateTimerDisplay(); // Update timer display on every tick
+        }
+      }, 1000);
+
+      // Handle form submission
+      answerForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const userAnswer = answerInput.value.trim();
+
+        if (userAnswer.toLowerCase() === correctAnswer.toLowerCase()) {
+          responseMessageElement.textContent = 'Congratulations! Please Wait';
+          responseMessageElement.style.color = 'green';
+
+          // Clear timer and redirect to new page
+          sessionStorage.removeItem(timerKey);
+          setTimeout(function () {
+            window.location.href = 'button.html'; // Replace with your next page
+          }, 2000);
+        } else {
+          responseMessageElement.textContent = 'Incorrect answer! Try again.';
+          responseMessageElement.style.color = 'red';
+        }
+      });
+    });
+
+  </script>
+  
+</body>
+</html>

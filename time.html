@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enter the Flag</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f3f4f6;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    form {
+      display: inline-block;
+      margin-top: 20px;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #35393e;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #31363b;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Enter the Code</h1>
+    <form id="flagForm">
+      <input type="text" id="flagInput" placeholder="Enter your code" required>
+      <button type="submit">Submit</button>
+    </form>
+    <p id="message"></p>
+  </div>
+  <script>
+    
+    const BSL = "n";
+    const DECO ="$";
+    const TOC = "o";
+    const TC ="*";
+    const BS ="e";
+    const BEE ="@";
+    const DMS = "T";
+    const DS ="^";
+    const OS = "a";
+    const OOPS ="#";
+    const JAVA = "r";
+    const EVS ="!";
+    const AM = "j";
+    const EG = "v";
+
+    const correctFlag = DMS+JAVA+TOC+AM+OS+BSL  ;
+
+    const actualflag ="sh"+BS+OOPS+BEE+BSL+BS+"v"+BS+JAVA+DS+DS+TC+"l"+TOC+EG+BS+"d"+DS+BEE+"y"+TOC+"u";
+    
+
+    document.getElementById("flagForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const input = document.getElementById("flagInput").value;
+      const message = document.getElementById("message");
+
+      if (input === correctFlag) {
+        message.textContent = "Flag:"+"{"+actualflag+"}";
+        message.style.color = "green";
+      } else {
+        message.textContent = "Incorrect Flag. Redirecting...";
+        message.style.color = "red";
+
+        // Redirect back to the previous page after 2 seconds
+        setTimeout(() => {
+          window.location.href = "button.html";
+        }, 100);
+      }
+    });
+  </script>
+</body>
+</html>
